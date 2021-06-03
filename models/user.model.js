@@ -4,17 +4,18 @@ const { ROLE } = require("../constants/models.constant");
 
 const userSchema = new Schema(
     {
-        username: {
+        userName: {
             type: String,
             required: true,
         },
-        password: {
+        passWord: {
             type: String,
             required: true,
         },
         email: { type: String },
         role: { type: Number, required: true, default: ROLE.STUDENT },
-        fullName: { type: String },
+        firstName: { type: String },
+        lastName: { type: String },
     },
     { timestamps: true }
 );
