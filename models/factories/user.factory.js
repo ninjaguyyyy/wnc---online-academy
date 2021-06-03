@@ -1,11 +1,14 @@
 const User = require("../user.model");
 
 const UserFactory = {
-    findByUsername: (userName) => {
+    findByUsername(userName) {
         return User.findOne({ userName });
     },
-    findByEmail: (email) => {
+    findByEmail(email) {
         return User.findOne({ email });
+    },
+    findAll() {
+        return User.find({});
     },
 };
 

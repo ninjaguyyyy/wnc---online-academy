@@ -1,10 +1,13 @@
 const { UsersResponses } = require("../helpers/responses.helper");
 const hashingManager = require("../helpers/hashing.helper");
+const tokenManager = require("../helpers/token.helper");
 const UserRepository = require("../models/repositories/user.repository");
 const UserFactory = require("../models/factories/user.factory");
 
 const userService = {
     register,
+    login,
+    getAll,
 };
 
 async function register(user) {
@@ -25,6 +28,42 @@ async function register(user) {
     delete user.passWord;
 
     return UsersResponses.registerSuccess(user);
+}
+
+async function login(user) {
+    const { userName, passWord, role } = user;
+
+    let isUsernameExist = await checkUsernameExist(userName);
+    if (!isUsernameExist) {
+        return UsersResponses.loginNotExistUsername();
+    }
+
+    const userDocument = await UserFactory.findByUsername(userName);
+
+    if (userDocument.role !== role) {
+        return UsersResponses.loginNotCorrectRole();
+    }
+
+    const isValidatePassword = hashingManager.checkValidPassword(
+        passWord,
+        userDocument.passWord
+    );
+    if (!isValidatePassword) {
+        return UsersResponses.loginNotCorrectPassword();
+    }
+
+    var token = tokenManager.generateAccessToken({
+        userId: userDocument._id,
+        role,
+    });
+
+    return UsersResponses.loginSuccess(token);
+}
+
+async function getAll() {
+    const users = await UserFactory.findAll();
+
+    return UsersResponses.getAllSuccess(users);
 }
 
 const checkUsernameExist = async (userName) => {
