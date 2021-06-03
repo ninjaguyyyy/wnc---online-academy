@@ -1,25 +1,52 @@
-const { checkUsernameExist } = require("../helpers/db.helper");
 const { UsersResponses } = require("../helpers/responses.helper");
+const hashingManager = require("../helpers/hashing.helper");
+const UserRepository = require("../models/repositories/user.repository");
+const UserFactory = require("../models/factories/user.factory");
 
 const userService = {
     register,
 };
 
 async function register(user) {
-    // validate user client sent: username, password
+    let isUsernameExist = await checkUsernameExist(user.userName);
+    if (isUsernameExist) {
+        return UsersResponses.registerAlreadyUsername();
+    }
 
-    // let isUsernameExist = await checkUsernameExist(user.username);
-    // if (isUsernameExist) {
-    //     return UsersResponses.registerAlreadyUsername();
-    // }
+    let isEmailExist = await checkEmailExist(user.email);
+    if (isEmailExist) {
+        return UsersResponses.registerAlreadyEmail();
+    }
 
-    // const hashedPassword = hashingManager.generateHashPassword(user.password);
-    // user.password = hashedPassword;
+    const hashedPassword = hashingManager.generateHashPassword(user.passWord);
+    user.passWord = hashedPassword;
 
-    // await rootUserRepository.insertUser(user);
-    // delete user.password;
+    await UserRepository.insertUser(user);
+    delete user.passWord;
 
     return UsersResponses.registerSuccess(user);
 }
+
+const checkUsernameExist = async (userName) => {
+    let result = false;
+
+    const userDocument = await UserFactory.findByUsername(userName);
+    if (userDocument) {
+        result = true;
+    }
+
+    return result;
+};
+
+const checkEmailExist = async (username) => {
+    let result = false;
+
+    const userDocument = await UserFactory.findByEmail(username);
+    if (userDocument) {
+        result = true;
+    }
+
+    return result;
+};
 
 module.exports = userService;

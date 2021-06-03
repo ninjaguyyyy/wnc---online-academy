@@ -1,7 +1,7 @@
 {
     "definitions": {},
     "$schema": "http://json-schema.org/draft-07/schema#",
-    "$id": "https://example.com/object1622732585.json",
+    "$id": "https://example.com/object1622733775.json",
     "title": "Root",
     "type": "object",
     "required": [
@@ -56,10 +56,9 @@
         "role": {
             "$id": "#root/role",
             "title": "Role",
-            "type": "number",
-            "default": "",
-            "examples": ["3"],
-            "pattern": "^.*$"
+            "type": "integer",
+            "examples": [3],
+            "default": 0
         }
     }
 }

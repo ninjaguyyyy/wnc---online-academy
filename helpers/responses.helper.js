@@ -18,6 +18,15 @@ const UsersResponses = {
             },
         };
     },
+    registerAlreadyEmail() {
+        return {
+            statusCode: 200,
+            payload: {
+                msg: "Email is already exist",
+                error: REGISTER_ALREADY_USERNAME,
+            },
+        };
+    },
 };
 
 module.exports = {

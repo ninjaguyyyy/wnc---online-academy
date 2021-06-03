@@ -1,8 +1,11 @@
 const User = require("../user.model");
 
 const UserFactory = {
-    findByUsername: (username) => {
-        return User.findOne({ username });
+    findByUsername: (userName) => {
+        return User.findOne({ userName });
+    },
+    findByEmail: (email) => {
+        return User.findOne({ email });
     },
 };
 
