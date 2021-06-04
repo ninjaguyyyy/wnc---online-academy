@@ -66,6 +66,14 @@ const UsersResponses = {
             },
         };
     },
+    getAllSuccess(users) {
+        return {
+            statusCode: 200,
+            payload: {
+                users,
+            },
+        };
+    },
 };
 
 module.exports = {
