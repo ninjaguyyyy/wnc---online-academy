@@ -1,0 +1,33 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://example.com/object1622813027.json",
+    "title": "Root",
+    "type": "object",
+    "required": ["userName", "passWord", "role"],
+    "properties": {
+        "userName": {
+            "$id": "#root/userName",
+            "title": "Username",
+            "type": "string",
+            "default": "",
+            "examples": ["student1"],
+            "pattern": "^.*$"
+        },
+        "passWord": {
+            "$id": "#root/passWord",
+            "title": "Password",
+            "type": "string",
+            "default": "",
+            "examples": ["student1"],
+            "pattern": "^.*$"
+        },
+        "role": {
+            "$id": "#root/role",
+            "title": "Role",
+            "type": "integer",
+            "examples": [3],
+            "default": 0
+        }
+    }
+}
