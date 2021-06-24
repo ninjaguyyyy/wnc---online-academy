@@ -8,9 +8,9 @@ const {
   EMAIL_IS_NOT_EXIST,
   OTP_IS_NOT_CORRECT,
   OTP_IS_EXPIRED,
-} = require('../constants/error-code.constant');
+} = require('../../constants/error-code.constant');
 
-const UsersResponses = {
+const RegisterResponses = {
   registerSuccess(user) {
     return {
       statusCode: 201,
@@ -35,6 +35,9 @@ const UsersResponses = {
       },
     };
   },
+};
+
+const LoginResponses = {
   loginNotExistUsername() {
     return {
       statusCode: 200,
@@ -79,6 +82,9 @@ const UsersResponses = {
       },
     };
   },
+};
+
+const GetAllResponses = {
   getAllSuccess(users) {
     return {
       statusCode: 200,
@@ -87,6 +93,9 @@ const UsersResponses = {
       },
     };
   },
+};
+
+const ResetResponses = {
   emailNotExist() {
     return {
       statusCode: 200,
@@ -96,7 +105,17 @@ const UsersResponses = {
       },
     };
   },
+  resetSuccess(user) {
+    return {
+      statusCode: 200,
+      payload: {
+        user,
+      },
+    };
+  },
+};
 
+const VerifyResponses = {
   verifyFailOtpIsNotCorrect() {
     return {
       statusCode: 200,
@@ -115,14 +134,6 @@ const UsersResponses = {
       },
     };
   },
-  resetSuccess(user) {
-    return {
-      statusCode: 200,
-      payload: {
-        user,
-      },
-    };
-  },
   verifySuccess(user) {
     return {
       statusCode: 200,
@@ -133,6 +144,12 @@ const UsersResponses = {
   },
 };
 
-module.exports = {
-  UsersResponses,
+const UsersResponses = {
+  RegisterResponses,
+  LoginResponses,
+  ResetResponses,
+  VerifyResponses,
+  GetAllResponses,
 };
+
+module.exports = UsersResponses;

@@ -1,4 +1,4 @@
-const { UsersResponses } = require('../helpers/responses.helper');
+const { UsersResponses } = require('../helpers/responses/index');
 const hashingManager = require('../helpers/hashing.helper');
 const tokenManager = require('../helpers/token.helper');
 const UserRepository = require('../models/repositories/user.repository');
@@ -20,12 +20,12 @@ const userService = {
 async function register(user) {
   let isUsernameExist = await checkUsernameExist(user.userName);
   if (isUsernameExist) {
-    return UsersResponses.registerAlreadyUsername();
+    return UsersResponses.RegisterResponses.registerAlreadyUsername();
   }
 
   let isEmailExist = await checkEmailExist(user.email);
   if (isEmailExist) {
-    return UsersResponses.registerAlreadyEmail();
+    return UsersResponses.RegisterResponses.registerAlreadyEmail();
   }
 
   const hashedPassword = hashingManager.generateHashPassword(user.passWord);
@@ -38,38 +38,38 @@ async function register(user) {
 
   emailService.sendOTP(user.email, otp.number);
 
-  return UsersResponses.registerSuccess(userDocument);
+  return UsersResponses.RegisterResponses.registerSuccess(userDocument);
 }
 
 async function resetOTP(email) {
   const user = await UserFactory.findByEmail(email);
   if (!user) {
-    return UsersResponses.emailNotExist();
+    return UsersResponses.ResetResponses.emailNotExist();
   }
 
   user.otp = createOTP();
   const updatedUser = await user.save();
 
-  return UsersResponses.resetSuccess(updatedUser);
+  return UsersResponses.ResetResponses.resetSuccess(updatedUser);
 }
 
 async function verifyUser({ email, otp }) {
   const user = await UserFactory.findByEmail(email);
   if (!user) {
-    return UsersResponses.emailNotExist();
+    return UsersResponses.VerifyResponses.emailNotExist();
   }
 
   if (user.otp.number !== otp) {
-    return UsersResponses.verifyFailOtpIsNotCorrect();
+    return UsersResponses.VerifyResponses.verifyFailOtpIsNotCorrect();
   }
   if (dayjs(user.otp.expired).isBefore(dayjs())) {
-    return UsersResponses.verifyFailOtpExpired();
+    return UsersResponses.VerifyResponses.verifyFailOtpExpired();
   }
 
   user.isActivated = true;
   const updatedUser = await user.save();
 
-  return UsersResponses.verifySuccess(updatedUser);
+  return UsersResponses.VerifyResponses.verifySuccess(updatedUser);
 }
 
 async function login(user) {
@@ -77,17 +77,17 @@ async function login(user) {
 
   let isUsernameExist = await checkUsernameExist(userName);
   if (!isUsernameExist) {
-    return UsersResponses.loginNotExistUsername();
+    return UsersResponses.LoginResponses.loginNotExistUsername();
   }
 
   const userDocument = await UserFactory.findByUsername(userName);
 
   if (userDocument.role !== role) {
-    return UsersResponses.loginNotCorrectRole();
+    return UsersResponses.LoginResponses.loginNotCorrectRole();
   }
 
   if (!userDocument.isActivated) {
-    return UsersResponses.loginFailUserAlreadyActivated();
+    return UsersResponses.LoginResponses.loginFailUserAlreadyActivated();
   }
 
   const isValidatePassword = hashingManager.checkValidPassword(
@@ -95,7 +95,7 @@ async function login(user) {
     userDocument.passWord
   );
   if (!isValidatePassword) {
-    return UsersResponses.loginNotCorrectPassword();
+    return UsersResponses.LoginResponses.loginNotCorrectPassword();
   }
 
   var token = tokenManager.generateAccessToken({
@@ -103,13 +103,13 @@ async function login(user) {
     role,
   });
 
-  return UsersResponses.loginSuccess(token);
+  return UsersResponses.LoginResponses.loginSuccess(token);
 }
 
 async function getAll() {
   const users = await UserFactory.findAll();
 
-  return UsersResponses.getAllSuccess(users);
+  return UsersResponses.GetAllResponses.getAllSuccess(users);
 }
 
 const checkUsernameExist = async (userName) => {
