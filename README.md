@@ -3,4 +3,5 @@
 - Đăng ký
   - Password được mã hóa
   - Có xác nhận OTP bằng email và có expired time
+  - Gửi lại OPT
 - Login
