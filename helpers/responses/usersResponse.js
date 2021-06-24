@@ -144,12 +144,36 @@ const VerifyResponses = {
   },
 };
 
+const UpdateProfileResponses = {
+  updateSuccess(user) {
+    return {
+      statusCode: 200,
+      payload: {
+        user,
+      },
+    };
+  },
+};
+
+const GetProfileResponses = {
+  getSuccess(user) {
+    return {
+      statusCode: 200,
+      payload: {
+        user,
+      },
+    };
+  },
+};
+
 const UsersResponses = {
   RegisterResponses,
   LoginResponses,
   ResetResponses,
   VerifyResponses,
   GetAllResponses,
+  UpdateProfileResponses,
+  GetProfileResponses,
 };
 
 module.exports = UsersResponses;

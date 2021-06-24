@@ -25,14 +25,30 @@ const login = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
-  const { statusCode, payload } = await userService.getAll(req.body);
+  const { statusCode, payload } = await userService.getAll();
 
   res.status(statusCode).json(payload);
 };
+
+const updateProfile = async (req, res) => {
+  const { statusCode, payload } = await userService.updateProfile(
+    req.user,
+    req.body
+  );
+  res.status(statusCode).json(payload);
+};
+
+const getProfile = async (req, res) => {
+  const { statusCode, payload } = await userService.updateProfile(req.user);
+  res.status(statusCode).json(payload);
+};
+
 module.exports = {
   register,
   login,
   getAll,
   OTPVerifyUser,
   resetOTP,
+  updateProfile,
+  getProfile,
 };

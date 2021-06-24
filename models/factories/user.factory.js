@@ -10,6 +10,9 @@ const UserFactory = {
   findAll() {
     return User.find({});
   },
+  findById(id) {
+    return User.find({ _id: id }).select('-passWord').exec();
+  },
 };
 
 module.exports = UserFactory;

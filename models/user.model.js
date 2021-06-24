@@ -1,6 +1,6 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
-const { ROLE } = require('../constants/models.constant')
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const { ROLE } = require('../constants/models.constant');
 
 const userSchema = new Schema(
   {
@@ -11,6 +11,7 @@ const userSchema = new Schema(
     passWord: {
       type: String,
       required: true,
+      select: false,
     },
     email: { type: String },
     role: { type: Number, required: true, default: ROLE.STUDENT },
@@ -23,7 +24,7 @@ const userSchema = new Schema(
     },
   },
   { timestamps: true }
-)
+);
 
-const User = mongoose.model('User', userSchema, 'users')
-module.exports = User
+const User = mongoose.model('User', userSchema, 'users');
+module.exports = User;

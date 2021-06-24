@@ -1,4 +1,5 @@
 const { UsersResponses } = require('../helpers/responses/index');
+const _ = require('lodash');
 const hashingManager = require('../helpers/hashing.helper');
 const tokenManager = require('../helpers/token.helper');
 const UserRepository = require('../models/repositories/user.repository');
@@ -15,6 +16,7 @@ const userService = {
   login,
   getAll,
   resetOTP,
+  updateProfile,
 };
 
 async function register(user) {
@@ -34,7 +36,6 @@ async function register(user) {
   user.otp = createOTP();
 
   const userDocument = await UserRepository.insertUser(user);
-  userDocument.passWord = null;
 
   emailService.sendOTP(user.email, otp.number);
 
@@ -110,6 +111,21 @@ async function getAll() {
   const users = await UserFactory.findAll();
 
   return UsersResponses.GetAllResponses.getAllSuccess(users);
+}
+
+async function updateProfile(user, dataToUpdate) {
+  const filteredDataToUpdate = _.pickBy(dataToUpdate);
+
+  const updatedUser = await UserRepository.updateUser(
+    user.userId,
+    filteredDataToUpdate
+  );
+  return UsersResponses.UpdateProfileResponses.updateSuccess(updatedUser);
+}
+
+async function getProfile(user) {
+  const userDocument = await UserFactory.findById(user.userId);
+  return UsersResponses.GetProfileResponses.getSuccess(userDocument);
 }
 
 const checkUsernameExist = async (userName) => {
