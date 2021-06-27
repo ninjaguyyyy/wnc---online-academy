@@ -10,6 +10,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', require('./routes/users.route'));
+app.use('/courses', require('./routes/courses.route'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

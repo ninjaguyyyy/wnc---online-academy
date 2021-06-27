@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId;
 const { ROLE } = require('../constants/models.constant');
 
 const userSchema = new Schema(
@@ -22,6 +23,9 @@ const userSchema = new Schema(
       number: Number,
       expired: String,
     },
+    favoriteCourses: [{ type: ObjectId, ref: 'Course' }],
+    attendedCourses: [{ type: ObjectId, ref: 'Course' }],
+    ownCourses: [{ type: ObjectId, ref: 'Course' }],
   },
   { timestamps: true }
 );
