@@ -8,6 +8,8 @@ const {
   EMAIL_IS_NOT_EXIST,
   OTP_IS_NOT_CORRECT,
   OTP_IS_EXPIRED,
+  REFRESH_TOKEN_REVOKED,
+  ACCESS_TOKEN_INVALID
 } = require('../../constants/error-code.constant');
 
 const RegisterResponses = {
@@ -74,11 +76,12 @@ const LoginResponses = {
       },
     };
   },
-  loginSuccess(token) {
+  loginSuccess(accessToken, refreshToken) {
     return {
       statusCode: 200,
       payload: {
-        accessToken: token,
+        accessToken,
+        refreshToken
       },
     };
   },
@@ -166,6 +169,37 @@ const GetProfileResponses = {
   },
 };
 
+const RefreshTokenResponses = {
+  refreshSuccess(accessToken) {
+    return {
+      statusCode: 200,
+      payload: {
+        accessToken,
+      },
+    };
+  },
+
+  refreshFailTokenRevoked() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'Refresh token is revoked!',
+        errorCode: REFRESH_TOKEN_REVOKED,
+      },
+    };
+  },
+
+  refreshFailTokenInvalid() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'Access token is invalid!',
+        errorCode: ACCESS_TOKEN_INVALID,
+      },
+    };
+  },
+};
+
 const UsersResponses = {
   RegisterResponses,
   LoginResponses,
@@ -174,6 +208,7 @@ const UsersResponses = {
   GetAllResponses,
   UpdateProfileResponses,
   GetProfileResponses,
+  RefreshTokenResponses
 };
 
 module.exports = UsersResponses;

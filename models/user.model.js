@@ -12,7 +12,6 @@ const userSchema = new Schema(
     passWord: {
       type: String,
       required: true,
-      select: false,
     },
     email: { type: String },
     role: { type: Number, required: true, default: ROLE.STUDENT },
@@ -26,6 +25,7 @@ const userSchema = new Schema(
     favoriteCourses: [{ type: ObjectId, ref: 'Course' }],
     attendedCourses: [{ type: ObjectId, ref: 'Course' }],
     ownCourses: [{ type: ObjectId, ref: 'Course' }],
+    refreshToken: {type: String}
   },
   { timestamps: true }
 );

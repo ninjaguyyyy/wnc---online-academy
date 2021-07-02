@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const tokenManager = require('../helpers/token.helper')
 
 module.exports = function (req, res, next) {
     const authHeader = req.headers["authorization"];
@@ -10,12 +10,11 @@ module.exports = function (req, res, next) {
         });
     }
 
-    jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, result) => {
-        if (err || !result) {
-            return res.status(401).json({ msg: "Token is invalid" });
-        }
-
-        req.user = result;
-        next();
-    });
+    try {
+      const decoded = tokenManager.verifyToken(token);
+      req.user = decoded;
+      next();
+    } catch(err) {
+      return res.status(401).json({ msg: "Token is invalid" });
+    }
 };

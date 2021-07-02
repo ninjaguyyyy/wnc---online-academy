@@ -11,7 +11,7 @@ const UserFactory = {
     return User.find({});
   },
   findById(id) {
-    return User.find({ _id: id }).select('-passWord').exec();
+    return User.findOne({ _id: id }).select('-passWord').exec();
   },
 };
 

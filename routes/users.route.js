@@ -20,5 +20,6 @@ router.post('/otp-verify', usersController.OTPVerifyUser);
 router.post('/login', userLoginValidation, usersController.login);
 router.put('/profile/update', auth, usersController.updateProfile);
 router.get('/profile', auth, usersController.getProfile);
+router.post('/refresh-token', usersController.refreshToken);
 
 module.exports = router;
