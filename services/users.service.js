@@ -1,6 +1,6 @@
 const { UsersResponses } = require('../helpers/responses/index');
 const _ = require('lodash');
-const randomstring = require('randomstring')
+const randomstring = require('randomstring');
 const hashingManager = require('../helpers/hashing.helper');
 const tokenManager = require('../helpers/token.helper');
 const UserRepository = require('../models/repositories/user.repository');
@@ -18,7 +18,7 @@ const userService = {
   getAll,
   resetOTP,
   updateProfile,
-  refreshToken
+  refreshToken,
 };
 
 async function register(user) {
@@ -39,7 +39,7 @@ async function register(user) {
 
   const userDocument = await UserRepository.insertUser(user);
 
-  emailService.sendOTP(user.email, otp.number);
+  emailService.sendOTP(user.email, user.otp.number);
 
   return UsersResponses.RegisterResponses.registerSuccess(userDocument);
 }
@@ -113,7 +113,7 @@ async function login(user) {
   return UsersResponses.LoginResponses.loginSuccess(accessToken, refreshToken);
 }
 
-async function refreshToken({accessToken, refreshToken}) {
+async function refreshToken({ accessToken, refreshToken }) {
   try {
     const { userId } = tokenManager.verifyTokenIgnoreExpired(accessToken);
 
@@ -126,16 +126,15 @@ async function refreshToken({accessToken, refreshToken}) {
         role: userDocument.role,
       });
 
-      return UsersResponses.RefreshTokenResponses.refreshSuccess(newAccessToken);
+      return UsersResponses.RefreshTokenResponses.refreshSuccess(
+        newAccessToken
+      );
     }
 
     return UsersResponses.RefreshTokenResponses.refreshFailTokenRevoked();
-    
-  } catch(err) {
+  } catch (err) {
     return UsersResponses.RefreshTokenResponses.refreshFailTokenInvalid();
   }
-
-  
 }
 
 async function getAll() {
