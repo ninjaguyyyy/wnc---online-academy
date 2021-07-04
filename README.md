@@ -6,3 +6,4 @@
   - Gửi lại OTP
 - Login
 - Refresh Token
+- Change password
