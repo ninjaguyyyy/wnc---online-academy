@@ -1,16 +1,20 @@
 const Category = require('../models/category.model');
 
-module.exports.create = async ({ name, path }) => {
-  console.log(name, path);
-  // validate name, path
+module.exports.create = async ({ name, parent }) => {
+  console.log(name, parent);
+  // validate name, parent
 
-  const category = await Category.create({ name, path });
+  const category = await Category.create({ name, parent });
 
   return { statusCode: 200, payload: { success: true, category } };
 };
 
 module.exports.getAllTree = async () => {
-  const categories = await Category.find().sort({ path: 1 });
+  const categories = await Category.findOne({
+    _id: '60e16888bed7e330585c1df5',
+  });
+  console.log(categories);
+  // db.categories.findOne( { _id: "MongoDB" } ).parent
 
   return { statusCode: 200, payload: { success: true, categories } };
 };

@@ -10,6 +10,7 @@ const ERROR_CODE = {
   OTP_IS_EXPIRED: 'otp_is_expired',
   REFRESH_TOKEN_REVOKED: 'refresh_token_revoked',
   ACCESS_TOKEN_INVALID: 'access_token_invalid',
+  WRONG_PASSWORD: 'wrong_password',
 };
 
 module.exports = ERROR_CODE;

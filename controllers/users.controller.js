@@ -43,6 +43,14 @@ const refreshToken = async (req, res) => {
   res.status(statusCode).json(payload);
 };
 
+const changePassword = async (req, res) => {
+  const { statusCode, payload } = await userService.changePassword(
+    req.user,
+    req.body
+  );
+  res.status(statusCode).json(payload);
+};
+
 module.exports = {
   register,
   login,
@@ -51,5 +59,6 @@ module.exports = {
   resetOTP,
   updateProfile,
   getProfile,
-  refreshToken
+  refreshToken,
+  changePassword,
 };

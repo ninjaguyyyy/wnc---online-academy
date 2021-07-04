@@ -19,6 +19,7 @@ const userService = {
   resetOTP,
   updateProfile,
   refreshToken,
+  changePassword,
 };
 
 async function register(user) {
@@ -151,6 +152,25 @@ async function updateProfile(user, dataToUpdate) {
     filteredDataToUpdate
   );
   return UsersResponses.UpdateProfileResponses.updateSuccess(updatedUser);
+}
+
+async function changePassword(user, { oldPassword, newPassword }) {
+  const userDocument = await UserFactory.findById(user.userId);
+
+  const isValidatePassword = hashingManager.checkValidPassword(
+    oldPassword,
+    userDocument.passWord
+  );
+  if (!isValidatePassword) {
+    return UsersResponses.ChangePasswordResponses.changeFailWrongPassword();
+  }
+
+  const hashedPassword = hashingManager.generateHashPassword(newPassword);
+
+  await UserRepository.updateUser(user.userId, {
+    passWord: hashedPassword,
+  });
+  return UsersResponses.ChangePasswordResponses.changeSuccess();
 }
 
 async function getProfile(user) {

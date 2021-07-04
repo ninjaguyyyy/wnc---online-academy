@@ -9,7 +9,8 @@ const {
   OTP_IS_NOT_CORRECT,
   OTP_IS_EXPIRED,
   REFRESH_TOKEN_REVOKED,
-  ACCESS_TOKEN_INVALID
+  ACCESS_TOKEN_INVALID,
+  WRONG_PASSWORD,
 } = require('../../constants/error-code.constant');
 
 const RegisterResponses = {
@@ -81,7 +82,7 @@ const LoginResponses = {
       statusCode: 200,
       payload: {
         accessToken,
-        refreshToken
+        refreshToken,
       },
     };
   },
@@ -199,6 +200,26 @@ const RefreshTokenResponses = {
     };
   },
 };
+const ChangePasswordResponses = {
+  changeSuccess() {
+    return {
+      statusCode: 200,
+      payload: {
+        success: true,
+      },
+    };
+  },
+
+  changeFailWrongPassword() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'Old password was wrong!',
+        errorCode: WRONG_PASSWORD,
+      },
+    };
+  },
+};
 
 const UsersResponses = {
   RegisterResponses,
@@ -208,7 +229,8 @@ const UsersResponses = {
   GetAllResponses,
   UpdateProfileResponses,
   GetProfileResponses,
-  RefreshTokenResponses
+  RefreshTokenResponses,
+  ChangePasswordResponses,
 };
 
 module.exports = UsersResponses;
