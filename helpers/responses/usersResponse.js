@@ -77,12 +77,13 @@ const LoginResponses = {
       },
     };
   },
-  loginSuccess(accessToken, refreshToken) {
+  loginSuccess(accessToken, refreshToken, user) {
     return {
       statusCode: 200,
       payload: {
         accessToken,
         refreshToken,
+        user,
       },
     };
   },

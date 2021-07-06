@@ -111,7 +111,14 @@ async function login(user) {
   userDocument.refreshToken = refreshToken;
   await userDocument.save();
 
-  return UsersResponses.LoginResponses.loginSuccess(accessToken, refreshToken);
+  return UsersResponses.LoginResponses.loginSuccess(accessToken, refreshToken, {
+    role: userDocument.role,
+    userName: userDocument.userName,
+    email: userDocument.email,
+    firstName: userDocument.firstName,
+    lastName: userDocument.lastName,
+    id: userDocument.id,
+  });
 }
 
 async function refreshToken({ accessToken, refreshToken }) {
