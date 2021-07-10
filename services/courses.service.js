@@ -8,10 +8,15 @@ module.exports.create = async (user, courseBody, avatarFile) => {
   // validate data
 
   let course = _.cloneDeep(courseBody);
-  let { originPrice, appliedPromotions: appliedPromotionsString } = course;
+  let {
+    originPrice,
+    appliedPromotions: appliedPromotionsString,
+    sections,
+  } = course;
 
   course.avatar = avatarFile.filename;
   course.lecturer = user.userId;
+  sections && (course.sections = JSON.parse(sections));
 
   if (appliedPromotionsString) {
     const appliedPromotionsObject = JSON.parse(appliedPromotionsString);
