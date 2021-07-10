@@ -21,7 +21,12 @@ const courseSchema = new Schema(
     rating: { type: Number, default: 0 },
     originPrice: { type: Number },
     appliedPromotions: [{ type: ObjectId, ref: 'Promotion' }],
-    totalPrice: { type: Number },
+    totalPrice: {
+      type: Number,
+      default: function () {
+        return this.originPrice;
+      },
+    },
     avatar: { type: String },
     shortDescription: { type: String },
     fullDescription: { type: String },
