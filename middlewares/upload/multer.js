@@ -4,7 +4,7 @@ const path = require('path');
 const randomstring = require('randomstring');
 
 const PREFIX_FILE_NAME = 'wnc21';
-const MAX_LENGTH_RANDOM_NAME = 5;
+const MAX_LENGTH_RANDOM_NAME = 10;
 
 const storage = new GridFsStorage({
   url: process.env.DB_URL,

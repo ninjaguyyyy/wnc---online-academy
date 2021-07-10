@@ -25,8 +25,7 @@ const courseSchema = new Schema(
     avatar: { type: String },
     shortDescription: { type: String },
     fullDescription: { type: String },
-    totalStudents: [{ type: ObjectId, ref: 'User' }],
-    totalRatings: { type: Number },
+    students: [{ type: ObjectId, ref: 'User' }],
     feedbacks: [
       {
         student: { type: ObjectId, ref: 'User' },
@@ -35,7 +34,7 @@ const courseSchema = new Schema(
         createdAt: String,
       },
     ],
-    isComplete: { type: Boolean },
+    isComplete: { type: Boolean, default: false },
     sections: [
       {
         name: String,

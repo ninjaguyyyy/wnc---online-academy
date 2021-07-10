@@ -13,7 +13,6 @@ module.exports.getAllTree = async () => {
   const categories = await Category.findOne({
     _id: '60e16888bed7e330585c1df5',
   });
-  console.log(categories);
   // db.categories.findOne( { _id: "MongoDB" } ).parent
 
   return { statusCode: 200, payload: { success: true, categories } };
