@@ -15,4 +15,7 @@ router.post(
   coursesController.create
 );
 
+router.get('/', coursesController.getAll);
+router.get('/:id', coursesController.getById);
+
 module.exports = router;

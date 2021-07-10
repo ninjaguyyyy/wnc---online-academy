@@ -1,6 +1,8 @@
 const _ = require('lodash');
 const PromotionFactory = require('../models/factories/promotion.factory');
 const CourseRepository = require('../models/repositories/course.repository');
+const CourseFactory = require('../models/factories/course.factory');
+const { CommonResponses } = require('../helpers/responses');
 
 module.exports.create = async (user, courseBody, avatarFile) => {
   // validate data
@@ -29,5 +31,26 @@ module.exports.create = async (user, courseBody, avatarFile) => {
   return {
     statusCode: 200,
     payload: { success: true, course: courseDocument },
+  };
+};
+
+module.exports.getAll = async () => {
+  const courses = await CourseFactory.findAll();
+
+  return {
+    statusCode: 200,
+    payload: { success: true, courses },
+  };
+};
+
+module.exports.getById = async (id) => {
+  const course = await CourseFactory.findById(id);
+  if (!course) {
+    return CommonResponses.getFailIdNotValid();
+  }
+
+  return {
+    statusCode: 200,
+    payload: { success: true, course },
   };
 };
