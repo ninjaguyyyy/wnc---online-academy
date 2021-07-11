@@ -47,9 +47,10 @@ const courseSchema = new Schema(
           {
             title: String,
             video: String,
+            content: String,
             attachedFiles: [String],
             totalMinutes: Number,
-            order: Number,
+            order: { type: Number, default: 0 },
           },
         ],
       },
@@ -59,4 +60,17 @@ const courseSchema = new Schema(
 );
 
 const Course = mongoose.model('Course', courseSchema, 'courses');
+
+// courseSchema.pre('save', function (next) {
+//   var doc = this;
+//   Course.findByIdAndUpdate(
+//     { _id: doc._id },
+//     { $inc: { 'sections.lectures.order': 1 } },
+//     function (error, counter) {
+//       if (error) return next(error);
+//       next();
+//     }
+//   );
+// });
+
 module.exports = Course;

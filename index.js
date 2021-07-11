@@ -13,6 +13,7 @@ app.use('/users', require('./routes/users.route'));
 app.use('/courses', require('./routes/courses.route'));
 app.use('/categories', require('./routes/categories.route'));
 app.use('/promotions', require('./routes/promotions.route'));
+app.use('/upload', require('./routes/upload.route'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
