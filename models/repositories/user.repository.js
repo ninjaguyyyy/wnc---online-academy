@@ -21,6 +21,14 @@ const UserRepository = {
       { new: true }
     ).exec();
   },
+
+  addAttendedCourse(userId, courseId) {
+    return User.findByIdAndUpdate(
+      userId,
+      { $push: { attendedCourses: courseId } },
+      { new: true }
+    ).exec();
+  },
 };
 
 module.exports = UserRepository;

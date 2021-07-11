@@ -14,6 +14,7 @@ dayjs.locale('vi');
 const { randomOTPNumber } = require('../helpers/random');
 const emailService = require('./email.service');
 const CourseFactory = require('../models/factories/course.factory');
+const CourseRepository = require('../models/repositories/course.repository');
 const {
   AddToFavoriteResponses,
 } = require('../helpers/responses/usersResponse');
@@ -29,6 +30,7 @@ const userService = {
   changePassword,
   addToFavorite,
   removeFromFavorite,
+  attendCourse,
 };
 
 async function register(user) {
@@ -215,6 +217,18 @@ async function removeFromFavorite(user, courseId) {
 
   await UserRepository.removeAFavoriteCourse(user.userId, courseId);
   return CommonResponses.success();
+}
+
+async function attendCourse(user, { courseId }) {
+  const course = await CourseFactory.findById(courseId);
+
+  if (!course) {
+    return CommonResponses.getFailIdNotValid();
+  }
+
+  await UserRepository.addAttendedCourse(user.userId, courseId);
+  await CourseRepository.addStudentToCourse(courseId, user.userId);
+  return CommonResponses.postSuccess();
 }
 
 async function getProfile(user) {

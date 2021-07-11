@@ -67,6 +67,14 @@ const removeFromFavorite = async (req, res) => {
   res.status(statusCode).json(payload);
 };
 
+const attendCourse = async (req, res) => {
+  const { statusCode, payload } = await userService.attendCourse(
+    req.user,
+    req.body
+  );
+  res.status(statusCode).json(payload);
+};
+
 module.exports = {
   register,
   login,
@@ -79,4 +87,5 @@ module.exports = {
   changePassword,
   addToFavorite,
   removeFromFavorite,
+  attendCourse,
 };

@@ -25,7 +25,7 @@ const userSchema = new Schema(
     favoriteCourses: [{ type: ObjectId, ref: 'Course' }],
     attendedCourses: [{ type: ObjectId, ref: 'Course' }],
     ownCourses: [{ type: ObjectId, ref: 'Course' }],
-    refreshToken: {type: String}
+    refreshToken: { type: String },
   },
   { timestamps: true }
 );

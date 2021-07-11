@@ -28,5 +28,6 @@ router.delete(
   auth,
   usersController.removeFromFavorite
 );
+router.post('/me/attend-courses', auth, usersController.attendCourse);
 
 module.exports = router;
