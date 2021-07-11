@@ -12,6 +12,15 @@ const CourseRepository = {
       { new: true }
     ).exec();
   },
+  addFeedback(courseId, feedback) {
+    return Course.findByIdAndUpdate(
+      courseId,
+      { $push: { feedbacks: feedback } },
+      { new: true }
+    )
+      .populate('feedbacks.student')
+      .exec();
+  },
 };
 
 module.exports = CourseRepository;

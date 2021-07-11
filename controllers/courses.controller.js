@@ -18,3 +18,12 @@ module.exports.getById = async (req, res) => {
   const { statusCode, payload } = await coursesService.getById(req.params.id);
   res.status(statusCode).json(payload);
 };
+
+module.exports.receiveFeedback = async (req, res) => {
+  const { statusCode, payload } = await coursesService.receiveFeedback(
+    req.params.id,
+    req.user.userId,
+    req.body
+  );
+  res.status(statusCode).json(payload);
+};

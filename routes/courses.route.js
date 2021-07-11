@@ -17,5 +17,6 @@ router.post(
 
 router.get('/', coursesController.getAll);
 router.get('/:id', coursesController.getById);
+router.post('/:id/feedback', auth, coursesController.receiveFeedback);
 
 module.exports = router;

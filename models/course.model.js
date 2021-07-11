@@ -36,7 +36,12 @@ const courseSchema = new Schema(
         student: { type: ObjectId, ref: 'User' },
         content: String,
         rating: { type: Number, min: 1, max: 5 },
-        createdAt: String,
+        createdAt: {
+          type: Date,
+          default: function () {
+            return Date.now();
+          },
+        },
       },
     ],
     isComplete: { type: Boolean, default: false },
