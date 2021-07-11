@@ -1,4 +1,7 @@
-const { UsersResponses } = require('../helpers/responses/index');
+const {
+  UsersResponses,
+  CommonResponses,
+} = require('../helpers/responses/index');
 const _ = require('lodash');
 const randomstring = require('randomstring');
 const hashingManager = require('../helpers/hashing.helper');
@@ -10,6 +13,10 @@ require('dayjs/locale/vi');
 dayjs.locale('vi');
 const { randomOTPNumber } = require('../helpers/random');
 const emailService = require('./email.service');
+const CourseFactory = require('../models/factories/course.factory');
+const {
+  AddToFavoriteResponses,
+} = require('../helpers/responses/usersResponse');
 
 const userService = {
   register,
@@ -20,6 +27,8 @@ const userService = {
   updateProfile,
   refreshToken,
   changePassword,
+  addToFavorite,
+  removeFromFavorite,
 };
 
 async function register(user) {
@@ -178,6 +187,34 @@ async function changePassword(user, { oldPassword, newPassword }) {
     passWord: hashedPassword,
   });
   return UsersResponses.ChangePasswordResponses.changeSuccess();
+}
+
+async function addToFavorite(user, { courseId }) {
+  const userDocument = await UserFactory.findById(user.userId);
+  const course = await CourseFactory.findById(courseId);
+
+  if (!course) {
+    return CommonResponses.getFailIdNotValid();
+  }
+
+  const favoriteCourses = userDocument.favoriteCourses;
+  if (favoriteCourses.includes(courseId)) {
+    return AddToFavoriteResponses.addFailAlreadyCourse();
+  }
+
+  await UserRepository.addFavoriteCourse(user.userId, courseId);
+  return CommonResponses.postSuccess();
+}
+
+async function removeFromFavorite(user, courseId) {
+  const course = await CourseFactory.findById(courseId);
+
+  if (!course) {
+    return CommonResponses.getFailIdNotValid();
+  }
+
+  await UserRepository.removeAFavoriteCourse(user.userId, courseId);
+  return CommonResponses.success();
 }
 
 async function getProfile(user) {

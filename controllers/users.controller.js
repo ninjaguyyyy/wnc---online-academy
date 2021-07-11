@@ -51,6 +51,22 @@ const changePassword = async (req, res) => {
   res.status(statusCode).json(payload);
 };
 
+const addToFavorite = async (req, res) => {
+  const { statusCode, payload } = await userService.addToFavorite(
+    req.user,
+    req.body
+  );
+  res.status(statusCode).json(payload);
+};
+
+const removeFromFavorite = async (req, res) => {
+  const { statusCode, payload } = await userService.removeFromFavorite(
+    req.user,
+    req.params.id
+  );
+  res.status(statusCode).json(payload);
+};
+
 module.exports = {
   register,
   login,
@@ -61,4 +77,6 @@ module.exports = {
   getProfile,
   refreshToken,
   changePassword,
+  addToFavorite,
+  removeFromFavorite,
 };

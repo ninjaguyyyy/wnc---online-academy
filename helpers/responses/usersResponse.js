@@ -147,6 +147,14 @@ const VerifyResponses = {
       },
     };
   },
+  emailNotExist() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'Email is not exist',
+      },
+    };
+  },
 };
 
 const UpdateProfileResponses = {
@@ -222,6 +230,17 @@ const ChangePasswordResponses = {
   },
 };
 
+const AddToFavoriteResponses = {
+  addFailAlreadyCourse() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'This course is added!',
+      },
+    };
+  },
+};
+
 const UsersResponses = {
   RegisterResponses,
   LoginResponses,
@@ -232,6 +251,7 @@ const UsersResponses = {
   GetProfileResponses,
   RefreshTokenResponses,
   ChangePasswordResponses,
+  AddToFavoriteResponses,
 };
 
 module.exports = UsersResponses;

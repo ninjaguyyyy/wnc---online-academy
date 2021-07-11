@@ -22,5 +22,11 @@ router.put('/profile/update', auth, usersController.updateProfile);
 router.get('/profile', auth, usersController.getProfile);
 router.post('/refresh-token', usersController.refreshToken);
 router.post('/change-password', auth, usersController.changePassword);
+router.post('/me/favorite-courses', auth, usersController.addToFavorite);
+router.delete(
+  '/me/favorite-courses/:id',
+  auth,
+  usersController.removeFromFavorite
+);
 
 module.exports = router;
