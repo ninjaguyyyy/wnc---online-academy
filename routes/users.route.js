@@ -10,10 +10,12 @@ const userRegisterValidation = require('../middlewares/validate.mdw')(
 const userLoginValidation = require('../middlewares/validate.mdw')(
   userLoginSchema
 );
+const { ROLE } = require('../constants/models.constant');
 const auth = require('../middlewares/auth.mdw');
+const role = require('../middlewares/role.mdw');
 const usersController = require('../controllers/users.controller');
 
-router.get('/', auth, usersController.getAll);
+router.get('/', auth, role(ROLE.ADMIN), usersController.getAll);
 router.post('/register', userRegisterValidation, usersController.register);
 router.post('/resend-otp-email', usersController.resetOTP);
 router.post('/otp-verify', usersController.OTPVerifyUser);
