@@ -9,5 +9,6 @@ const { ROLE } = require('../constants/models.constant');
 router.post('/', auth, role(ROLE.ADMIN), categoriesController.create);
 router.get('/', categoriesController.getAll);
 router.get('/tree', categoriesController.getTree);
+router.patch('/:id', auth, role(ROLE.ADMIN), categoriesController.update);
 
 module.exports = router;

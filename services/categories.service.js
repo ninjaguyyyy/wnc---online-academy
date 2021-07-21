@@ -10,6 +10,16 @@ module.exports.create = async ({ name, parent }) => {
   return { statusCode: 200, payload: { success: true, category } };
 };
 
+module.exports.update = async ({ name }, id) => {
+  const category = await Category.findByIdAndUpdate(
+    id,
+    { name },
+    { new: true }
+  ).lean();
+
+  return { statusCode: 200, payload: { success: true, category } };
+};
+
 module.exports.getAll = async () => {
   const categories = await Category.find({})
     .lean()

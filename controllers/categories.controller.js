@@ -14,3 +14,11 @@ module.exports.getTree = async (req, res) => {
   const { statusCode, payload } = await categoriesService.getTree(req.body);
   res.status(statusCode).json(payload);
 };
+
+module.exports.update = async (req, res) => {
+  const { statusCode, payload } = await categoriesService.update(
+    req.body,
+    req.params.id
+  );
+  res.status(statusCode).json(payload);
+};
