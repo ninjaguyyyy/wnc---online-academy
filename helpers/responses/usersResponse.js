@@ -8,6 +8,9 @@ const {
   EMAIL_IS_NOT_EXIST,
   OTP_IS_NOT_CORRECT,
   OTP_IS_EXPIRED,
+  REFRESH_TOKEN_REVOKED,
+  ACCESS_TOKEN_INVALID,
+  WRONG_PASSWORD,
 } = require('../../constants/error-code.constant');
 
 const RegisterResponses = {
@@ -74,11 +77,13 @@ const LoginResponses = {
       },
     };
   },
-  loginSuccess(token) {
+  loginSuccess(accessToken, refreshToken, user) {
     return {
       statusCode: 200,
       payload: {
-        accessToken: token,
+        accessToken,
+        refreshToken,
+        user,
       },
     };
   },
@@ -142,6 +147,98 @@ const VerifyResponses = {
       },
     };
   },
+  emailNotExist() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'Email is not exist',
+      },
+    };
+  },
+};
+
+const UpdateProfileResponses = {
+  updateSuccess(user) {
+    return {
+      statusCode: 200,
+      payload: {
+        user,
+      },
+    };
+  },
+};
+
+const GetProfileResponses = {
+  getSuccess(user) {
+    return {
+      statusCode: 200,
+      payload: {
+        user,
+      },
+    };
+  },
+};
+
+const RefreshTokenResponses = {
+  refreshSuccess(accessToken) {
+    return {
+      statusCode: 200,
+      payload: {
+        accessToken,
+      },
+    };
+  },
+
+  refreshFailTokenRevoked() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'Refresh token is revoked!',
+        errorCode: REFRESH_TOKEN_REVOKED,
+      },
+    };
+  },
+
+  refreshFailTokenInvalid() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'Access token is invalid!',
+        errorCode: ACCESS_TOKEN_INVALID,
+      },
+    };
+  },
+};
+const ChangePasswordResponses = {
+  changeSuccess() {
+    return {
+      statusCode: 200,
+      payload: {
+        success: true,
+      },
+    };
+  },
+
+  changeFailWrongPassword() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'Old password was wrong!',
+        errorCode: WRONG_PASSWORD,
+      },
+    };
+  },
+};
+
+const AddToFavoriteResponses = {
+  addFailAlreadyCourse() {
+    return {
+      statusCode: 400,
+      payload: {
+        msg: 'This course is added!',
+      },
+    };
+  },
 };
 
 const UsersResponses = {
@@ -150,6 +247,11 @@ const UsersResponses = {
   ResetResponses,
   VerifyResponses,
   GetAllResponses,
+  UpdateProfileResponses,
+  GetProfileResponses,
+  RefreshTokenResponses,
+  ChangePasswordResponses,
+  AddToFavoriteResponses,
 };
 
 module.exports = UsersResponses;

@@ -8,6 +8,9 @@ const ERROR_CODE = {
   EMAIL_IS_NOT_EXIST: 'email_is_not_exist',
   OTP_IS_NOT_CORRECT: 'otp_is_not_correct',
   OTP_IS_EXPIRED: 'otp_is_expired',
+  REFRESH_TOKEN_REVOKED: 'refresh_token_revoked',
+  ACCESS_TOKEN_INVALID: 'access_token_invalid',
+  WRONG_PASSWORD: 'wrong_password',
 };
 
 module.exports = ERROR_CODE;

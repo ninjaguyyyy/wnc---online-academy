@@ -10,6 +10,9 @@ const UserFactory = {
   findAll() {
     return User.find({});
   },
+  findById(id) {
+    return User.findOne({ _id: id }).exec();
+  },
 };
 
 module.exports = UserFactory;

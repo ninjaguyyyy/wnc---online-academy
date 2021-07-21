@@ -8,6 +8,16 @@ const generateAccessToken = (info) => {
     });
 };
 
+const verifyToken = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET_KEY);
+}
+
+const verifyTokenIgnoreExpired = (token) => {
+  return jwt.verify(token, process.env.JWT_SECRET_KEY, {ignoreExpiration: true,});
+}
+
 tokenManager.generateAccessToken = generateAccessToken;
+tokenManager.verifyToken = verifyToken;
+tokenManager.verifyTokenIgnoreExpired = verifyTokenIgnoreExpired;
 
 module.exports = tokenManager;

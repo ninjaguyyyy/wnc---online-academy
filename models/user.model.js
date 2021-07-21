@@ -1,6 +1,7 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
-const { ROLE } = require('../constants/models.constant')
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const ObjectId = mongoose.Types.ObjectId;
+const { ROLE } = require('../constants/models.constant');
 
 const userSchema = new Schema(
   {
@@ -21,9 +22,13 @@ const userSchema = new Schema(
       number: Number,
       expired: String,
     },
+    favoriteCourses: [{ type: ObjectId, ref: 'Course' }],
+    attendedCourses: [{ type: ObjectId, ref: 'Course' }],
+    ownCourses: [{ type: ObjectId, ref: 'Course' }],
+    refreshToken: { type: String },
   },
   { timestamps: true }
-)
+);
 
-const User = mongoose.model('User', userSchema, 'users')
-module.exports = User
+const User = mongoose.model('User', userSchema, 'users');
+module.exports = User;

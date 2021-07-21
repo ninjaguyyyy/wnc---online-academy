@@ -10,13 +10,26 @@ const userRegisterValidation = require('../middlewares/validate.mdw')(
 const userLoginValidation = require('../middlewares/validate.mdw')(
   userLoginSchema
 );
+const { ROLE } = require('../constants/models.constant');
 const auth = require('../middlewares/auth.mdw');
+const role = require('../middlewares/role.mdw');
 const usersController = require('../controllers/users.controller');
 
+router.get('/', auth, role(ROLE.ADMIN), usersController.getAll);
 router.post('/register', userRegisterValidation, usersController.register);
 router.post('/resend-otp-email', usersController.resetOTP);
 router.post('/otp-verify', usersController.OTPVerifyUser);
 router.post('/login', userLoginValidation, usersController.login);
-router.get('/', auth, usersController.getAll);
+router.put('/profile/update', auth, usersController.updateProfile);
+router.get('/profile', auth, usersController.getProfile);
+router.post('/refresh-token', usersController.refreshToken);
+router.post('/change-password', auth, usersController.changePassword);
+router.post('/me/favorite-courses', auth, usersController.addToFavorite);
+router.delete(
+  '/me/favorite-courses/:id',
+  auth,
+  usersController.removeFromFavorite
+);
+router.post('/me/attend-courses', auth, usersController.attendCourse);
 
 module.exports = router;
