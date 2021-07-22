@@ -4,7 +4,7 @@ const CourseRepository = require('../models/repositories/course.repository');
 const CourseFactory = require('../models/factories/course.factory');
 const { CommonResponses, CoursesResponses } = require('../helpers/responses');
 
-module.exports.create = async (user, courseBody, avatarFile) => {
+module.exports.create = async (user, courseBody) => {
   // validate data
 
   let course = _.cloneDeep(courseBody);
@@ -14,7 +14,6 @@ module.exports.create = async (user, courseBody, avatarFile) => {
     sections,
   } = course;
 
-  course.avatar = avatarFile.filename;
   course.lecturer = user.userId;
   sections && (course.sections = JSON.parse(sections));
 
