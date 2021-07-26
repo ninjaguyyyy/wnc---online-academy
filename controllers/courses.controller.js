@@ -9,7 +9,7 @@ module.exports.create = async (req, res) => {
 };
 
 module.exports.getAll = async (req, res) => {
-  const { statusCode, payload } = await coursesService.getAll();
+  const { statusCode, payload } = await coursesService.getAll(req.query);
   res.status(statusCode).json(payload);
 };
 
