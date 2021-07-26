@@ -3,14 +3,13 @@ const coursesService = require('../services/courses.service');
 module.exports.create = async (req, res) => {
   const { statusCode, payload } = await coursesService.create(
     req.user,
-    req.body,
-    req.file
+    req.body
   );
   res.status(statusCode).json(payload);
 };
 
 module.exports.getAll = async (req, res) => {
-  const { statusCode, payload } = await coursesService.getAll();
+  const { statusCode, payload } = await coursesService.getAll(req.query);
   res.status(statusCode).json(payload);
 };
 

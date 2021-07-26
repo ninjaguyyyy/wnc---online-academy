@@ -3,25 +3,19 @@ const PromotionFactory = require('../models/factories/promotion.factory');
 const CourseRepository = require('../models/repositories/course.repository');
 const CourseFactory = require('../models/factories/course.factory');
 const { CommonResponses, CoursesResponses } = require('../helpers/responses');
+const CategoryFactory = require('../models/factories/category.factory');
 
-module.exports.create = async (user, courseBody, avatarFile) => {
+module.exports.create = async (user, courseBody) => {
   // validate data
 
   let course = _.cloneDeep(courseBody);
-  let {
-    originPrice,
-    appliedPromotions: appliedPromotionsString,
-    sections,
-  } = course;
+  let { originPrice, appliedPromotions } = course;
 
-  course.avatar = avatarFile.filename;
   course.lecturer = user.userId;
-  sections && (course.sections = JSON.parse(sections));
 
-  if (appliedPromotionsString) {
-    const appliedPromotionsObject = JSON.parse(appliedPromotionsString);
+  if (appliedPromotions) {
     const appliedPromotionsDocuments = await PromotionFactory.findByIds(
-      appliedPromotionsObject
+      appliedPromotions
     );
     const totalDiscount = appliedPromotionsDocuments.reduce(
       (acc, promotion) => acc + promotion.discount,
@@ -39,8 +33,28 @@ module.exports.create = async (user, courseBody, avatarFile) => {
   };
 };
 
-module.exports.getAll = async () => {
-  const courses = await CourseFactory.findAll();
+module.exports.getAll = async ({ category }) => {
+  const query = {};
+  if (category) {
+    const categoryDocument = await CategoryFactory.findById(category);
+    if (!categoryDocument) {
+      return {
+        statusCode: 200,
+        payload: { success: false, msg: 'Category values is not valid' },
+      };
+    }
+    query.categories = [category];
+    const child = categoryDocument.child;
+    child.length !== 0 && (query.categories = [...query.categories, ...child]);
+  }
+  const courses = await CourseFactory.findAll(query);
+
+  if (!courses) {
+    return {
+      statusCode: 200,
+      payload: { success: false, msg: 'Query values is not valid' },
+    };
+  }
 
   return {
     statusCode: 200,
