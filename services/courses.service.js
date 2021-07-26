@@ -9,20 +9,17 @@ module.exports.create = async (user, courseBody) => {
   // validate data
 
   let course = _.cloneDeep(courseBody);
-  let { originPrice, appliedPromotions } = course;
+  let { originPrice, promotion } = course;
 
   course.lecturer = user.userId;
 
-  if (appliedPromotions) {
-    const appliedPromotionsDocuments = await PromotionFactory.findByIds(
-      appliedPromotions
+  if (!promotion) {
+    course = _.pickBy(course);
+  } else {
+    const promotionDocument = await PromotionFactory.findById(promotion);
+    course.totalPrice = Math.round(
+      originPrice * (1 - promotionDocument.discount)
     );
-    const totalDiscount = appliedPromotionsDocuments.reduce(
-      (acc, promotion) => acc + promotion.discount,
-      0
-    );
-    course.appliedPromotions = appliedPromotionsObject;
-    course.totalPrice = Math.round(originPrice * (1 - totalDiscount));
   }
 
   const courseDocument = await CourseRepository.insertOne(course);

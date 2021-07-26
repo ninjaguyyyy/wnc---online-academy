@@ -20,7 +20,7 @@ const courseSchema = new Schema(
     },
     rating: { type: Number, default: 0 },
     originPrice: { type: Number },
-    appliedPromotions: [{ type: ObjectId, ref: 'Promotion' }],
+    promotion: { type: ObjectId, ref: 'Promotion' },
     totalPrice: {
       type: Number,
       default: function () {

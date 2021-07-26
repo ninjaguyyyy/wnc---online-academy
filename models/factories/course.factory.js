@@ -9,13 +9,21 @@ const CourseFactory = {
       .populate('appliedPromotions')
       .populate('category')
       .populate('lecturer')
+      .populate('promotion')
+      .lean()
       .exec();
   },
   findById(id) {
     if (!ObjectId.isValid(id)) {
       return false;
     }
-    return Course.findOne({ _id: id }).exec();
+    return Course.findOne({ _id: id })
+      .populate('appliedPromotions')
+      .populate('category')
+      .populate('lecturer')
+      .populate('promotion')
+      .lean()
+      .exec();
   },
 };
 
