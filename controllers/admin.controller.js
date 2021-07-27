@@ -7,15 +7,14 @@ module.exports.createUser = async (req, res) => {
   const user = req.body;
   let isUsernameExist = await checkUsernameExist(user.userName);
   if (isUsernameExist) {
-    return UsersResponses.RegisterResponses.registerAlreadyUsername();
+    return res.status(200).json({ success: false, msg: 'Username was exist' });
   }
 
   let isEmailExist = await checkEmailExist(user.email);
   if (isEmailExist) {
-    return UsersResponses.RegisterResponses.registerAlreadyEmail();
+    return res.status(200).json({ success: false, msg: 'Email was exist' });
   }
 
-  console.log(user);
   const hashedPassword = hashingManager.generateHashPassword(user.passWord);
   user.passWord = hashedPassword;
   user.isActivated = true;
