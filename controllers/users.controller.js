@@ -75,6 +75,11 @@ const attendCourse = async (req, res) => {
   res.status(statusCode).json(payload);
 };
 
+const ownCourses = async (req, res) => {
+  const { statusCode, payload } = await userService.ownCourses(req.user);
+  res.status(statusCode).json(payload);
+};
+
 module.exports = {
   register,
   login,
@@ -88,4 +93,5 @@ module.exports = {
   addToFavorite,
   removeFromFavorite,
   attendCourse,
+  ownCourses,
 };

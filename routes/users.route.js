@@ -31,5 +31,11 @@ router.delete(
   usersController.removeFromFavorite
 );
 router.post('/me/attend-courses', auth, usersController.attendCourse);
+router.get(
+  '/me/own-courses',
+  auth,
+  role(ROLE.TEACHER),
+  usersController.ownCourses
+);
 
 module.exports = router;

@@ -31,6 +31,7 @@ const userService = {
   addToFavorite,
   removeFromFavorite,
   attendCourse,
+  ownCourses,
 };
 
 async function register(user) {
@@ -229,6 +230,16 @@ async function attendCourse(user, { courseId }) {
   await UserRepository.addAttendedCourse(user.userId, courseId);
   await CourseRepository.addStudentToCourse(courseId, user.userId);
   return CommonResponses.postSuccess();
+}
+
+async function ownCourses(teacher) {
+  const courses = await CourseFactory.findByLecturer(teacher.userId);
+
+  if (!courses) {
+    return CommonResponses.getFailIdNotValid();
+  }
+
+  return { statusCode: 200, payload: { success: true, courses } };
 }
 
 async function getProfile(user) {

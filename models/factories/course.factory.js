@@ -25,6 +25,18 @@ const CourseFactory = {
       .lean()
       .exec();
   },
+  findByLecturer(teacherId) {
+    if (!ObjectId.isValid(teacherId)) {
+      return false;
+    }
+    return Course.find({ lecturer: teacherId })
+      .populate('appliedPromotions')
+      .populate('category')
+      .populate('lecturer')
+      .populate('promotion')
+      .lean()
+      .exec();
+  },
 };
 
 module.exports = CourseFactory;
