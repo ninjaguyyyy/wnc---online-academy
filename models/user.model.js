@@ -26,6 +26,7 @@ const userSchema = new Schema(
     attendedCourses: [{ type: ObjectId, ref: 'Course' }],
     ownCourses: [{ type: ObjectId, ref: 'Course' }],
     refreshToken: { type: String },
+    createdByAdmin: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
