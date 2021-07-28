@@ -60,6 +60,7 @@ const courseSchema = new Schema(
         ],
       },
     ],
+    isDisabled: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

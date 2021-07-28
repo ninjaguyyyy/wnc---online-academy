@@ -1,5 +1,6 @@
 const hashingManager = require('../helpers/hashing.helper');
 const { UsersResponses } = require('../helpers/responses');
+const Course = require('../models/course.model');
 const UserFactory = require('../models/factories/user.factory');
 const UserRepository = require('../models/repositories/user.repository');
 
@@ -35,6 +36,24 @@ module.exports.updateUser = async (req, res) => {
   const userId = req.params.id;
   const user = await UserRepository.updateUser(userId, req.body);
   return res.status(200).json({ success: true, user });
+};
+
+module.exports.disableCourse = async (req, res) => {
+  const courseId = req.params.id;
+  await Course.findByIdAndUpdate(courseId, { isDisabled: true });
+  return res.status(200).json({ success: true });
+};
+
+module.exports.enableCourse = async (req, res) => {
+  const courseId = req.params.id;
+  await Course.findByIdAndUpdate(courseId, { isDisabled: false });
+  return res.status(200).json({ success: true });
+};
+
+module.exports.deleteCourse = async (req, res) => {
+  const courseId = req.params.id;
+  await Course.findByIdAndDelete(courseId);
+  return res.status(200).json({ success: true });
 };
 
 const checkUsernameExist = async (userName) => {
