@@ -29,6 +29,10 @@ const UserRepository = {
       { new: true }
     ).exec();
   },
+
+  delete(userId) {
+    return User.findByIdAndDelete(userId);
+  },
 };
 
 module.exports = UserRepository;
