@@ -25,6 +25,18 @@ module.exports.createUser = async (req, res) => {
   return res.status(201).json({ success: true, user: userDocument });
 };
 
+module.exports.deleteUser = async (req, res) => {
+  const userId = req.params.id;
+  await UserRepository.delete(userId);
+  return res.status(200).json({ success: true });
+};
+
+module.exports.updateUser = async (req, res) => {
+  const userId = req.params.id;
+  const user = await UserRepository.updateUser(userId, req.body);
+  return res.status(200).json({ success: true, user });
+};
+
 const checkUsernameExist = async (userName) => {
   let result = false;
 
