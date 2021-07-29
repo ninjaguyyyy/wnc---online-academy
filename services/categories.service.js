@@ -42,3 +42,8 @@ module.exports.getTree = async () => {
     },
   };
 };
+
+module.exports.delete = async (id) => {
+  await Category.findByIdAndDelete(id);
+  return { statusCode: 200, payload: { success: true } };
+};

@@ -10,5 +10,6 @@ router.post('/', auth, role(ROLE.ADMIN), categoriesController.create);
 router.get('/', categoriesController.getAll);
 router.get('/tree', categoriesController.getTree);
 router.patch('/:id', auth, role(ROLE.ADMIN), categoriesController.update);
+router.delete('/:id', auth, role(ROLE.ADMIN), categoriesController.delete);
 
 module.exports = router;

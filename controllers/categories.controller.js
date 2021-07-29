@@ -22,3 +22,8 @@ module.exports.update = async (req, res) => {
   );
   res.status(statusCode).json(payload);
 };
+
+module.exports.delete = async (req, res) => {
+  const { statusCode, payload } = await categoriesService.delete(req.params.id);
+  res.status(statusCode).json(payload);
+};
