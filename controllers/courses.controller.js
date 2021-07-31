@@ -26,3 +26,11 @@ module.exports.receiveFeedback = async (req, res) => {
   );
   res.status(statusCode).json(payload);
 };
+
+module.exports.update = async (req, res) => {
+  const { statusCode, payload } = await coursesService.update(
+    req.params.id,
+    req.body
+  );
+  res.status(statusCode).json(payload);
+};

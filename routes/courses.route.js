@@ -10,6 +10,7 @@ router.post('/', auth, role(ROLE.TEACHER), coursesController.create);
 
 router.get('/', coursesController.getAll);
 router.get('/:id', coursesController.getById);
+router.patch('/:id', auth, role(ROLE.TEACHER), coursesController.update);
 router.post('/:id/feedback', auth, coursesController.receiveFeedback);
 
 module.exports = router;

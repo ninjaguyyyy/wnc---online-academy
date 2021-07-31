@@ -4,6 +4,7 @@ const CourseRepository = require('../models/repositories/course.repository');
 const CourseFactory = require('../models/factories/course.factory');
 const { CommonResponses, CoursesResponses } = require('../helpers/responses');
 const CategoryFactory = require('../models/factories/category.factory');
+const Course = require('../models/course.model');
 
 module.exports.create = async (user, courseBody) => {
   // validate data
@@ -90,5 +91,16 @@ module.exports.receiveFeedback = async (courseId, userId, feedback) => {
   return {
     statusCode: 200,
     payload: { success: true, feedbacks },
+  };
+};
+
+module.exports.update = async (courseId, dataToUpdate) => {
+  const updatedCourse = await Course.findByIdAndUpdate(courseId, dataToUpdate, {
+    new: true,
+  }).lean();
+
+  return {
+    statusCode: 200,
+    payload: { success: true, course: updatedCourse },
   };
 };
