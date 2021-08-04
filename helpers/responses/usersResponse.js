@@ -233,7 +233,7 @@ const ChangePasswordResponses = {
 const AddToFavoriteResponses = {
   addFailAlreadyCourse() {
     return {
-      statusCode: 400,
+      statusCode: 200,
       payload: {
         msg: 'This course is added!',
       },
