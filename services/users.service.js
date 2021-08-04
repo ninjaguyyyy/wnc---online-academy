@@ -32,6 +32,7 @@ const userService = {
   removeFromFavorite,
   attendCourse,
   ownCourses,
+  getProfile,
 };
 
 async function register(user) {

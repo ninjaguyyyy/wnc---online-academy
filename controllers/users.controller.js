@@ -34,7 +34,7 @@ const updateProfile = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  const { statusCode, payload } = await userService.updateProfile(req.user);
+  const { statusCode, payload } = await userService.getProfile(req.user);
   res.status(statusCode).json(payload);
 };
 

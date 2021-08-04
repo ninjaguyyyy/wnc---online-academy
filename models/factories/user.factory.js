@@ -11,7 +11,20 @@ const UserFactory = {
     return User.find({});
   },
   findById(id) {
-    return User.findOne({ _id: id }).exec();
+    return User.findOne({ _id: id })
+      .populate({
+        path: 'favoriteCourses',
+        populate: [
+          {
+            path: 'category',
+          },
+          {
+            path: 'lecturer',
+          },
+        ],
+      })
+      .lean()
+      .exec();
   },
 };
 
