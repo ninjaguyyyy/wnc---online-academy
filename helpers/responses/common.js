@@ -1,7 +1,7 @@
 const CommonResponses = {
   getFailIdNotValid() {
     return {
-      statusCode: 400,
+      statusCode: 200,
       payload: {
         msg: 'Id is not valid',
       },

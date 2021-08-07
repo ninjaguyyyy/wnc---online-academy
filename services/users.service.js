@@ -131,6 +131,8 @@ async function login(user) {
     firstName: userDocument.firstName,
     lastName: userDocument.lastName,
     id: userDocument.id,
+    favoriteCourses: userDocument.favoriteCourses,
+    attendedCourses: userDocument.attendedCourses,
   });
 }
 
