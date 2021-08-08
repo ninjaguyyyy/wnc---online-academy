@@ -1,3 +1,4 @@
+const User = require('../models/user.model');
 const userService = require('../services/users.service');
 
 const register = async (req, res) => {
@@ -80,8 +81,29 @@ const ownCourses = async (req, res) => {
   res.status(statusCode).json(payload);
 };
 
+const attendedCourses = async (req, res) => {
+  const user = await User.findById(req.user.userId)
+    .populate({
+      path: 'attendedCourses',
+      populate: [
+        {
+          path: 'category',
+        },
+        {
+          path: 'lecturer',
+        },
+      ],
+    })
+    .lean();
+  console.log(user);
+  return res
+    .status(200)
+    .json({ success: true, attendedCourses: user.attendedCourses });
+};
+
 module.exports = {
   register,
+  attendedCourses,
   login,
   getAll,
   OTPVerifyUser,

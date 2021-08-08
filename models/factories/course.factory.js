@@ -22,6 +22,7 @@ const CourseFactory = {
       .populate('category')
       .populate('lecturer')
       .populate('promotion')
+      .populate('feedbacks.student')
       .lean()
       .exec();
   },

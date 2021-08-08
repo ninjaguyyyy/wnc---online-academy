@@ -77,14 +77,20 @@ module.exports.receiveFeedback = async (courseId, userId, feedback) => {
   if (!course) {
     return CommonResponses.getFailIdNotValid();
   }
-  if (!course.students.includes(userId)) {
+  if (!course.students.map((student) => student.toString()).includes(userId)) {
     return CoursesResponses.postFeedbackFailStudentNotExist();
   }
+
+  const totalPoint =
+    course.feedbacks.reduce((acc, review) => acc + review.rating, 0) +
+    feedback.rating;
+  const averageRating = (totalPoint / (course.feedbacks.length + 1)).toFixed(2);
 
   feedback.student = userId;
   const updatedCourse = await await CourseRepository.addFeedback(
     courseId,
-    feedback
+    feedback,
+    averageRating
   );
   const feedbacks = updatedCourse.feedbacks;
 

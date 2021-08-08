@@ -1,4 +1,7 @@
+const Course = require('../models/course.model');
 const coursesService = require('../services/courses.service');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 module.exports.create = async (req, res) => {
   const { statusCode, payload } = await coursesService.create(
