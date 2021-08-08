@@ -7,6 +7,7 @@ const courseSchema = new Schema(
     title: {
       type: String,
       required: true,
+      index: true,
     },
     category: {
       type: ObjectId,
@@ -28,8 +29,8 @@ const courseSchema = new Schema(
       },
     },
     avatar: { type: String },
-    shortDescription: { type: String },
-    fullDescription: { type: String },
+    shortDescription: { type: String, index: true },
+    fullDescription: { type: String, index: true },
     students: [{ type: ObjectId, ref: 'User' }],
     feedbacks: [
       {
@@ -64,6 +65,12 @@ const courseSchema = new Schema(
   },
   { timestamps: true }
 );
+
+courseSchema.index({
+  title: 'text',
+  fullDescription: 'text',
+  shortDescription: 'text',
+});
 
 const Course = mongoose.model('Course', courseSchema, 'courses');
 

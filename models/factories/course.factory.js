@@ -2,7 +2,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 const Course = require('../course.model');
 
 const CourseFactory = {
-  findAll({ categories, sort, page, perPage }) {
+  findAll({ categories, sort, search, page, perPage }) {
     let sortOption = {};
     if (sort) {
       const receivedSortValue = sort.split('_');
@@ -12,7 +12,14 @@ const CourseFactory = {
       sortOption = { [field]: receivedSortValue[1] };
     }
 
-    const filter = {};
+    const filter = {
+      $or: [
+        { title: { $regex: new RegExp(search), $options: 'i' } },
+        { fullDescription: { $regex: new RegExp(search), $options: 'i' } },
+        { shortDescription: { $regex: new RegExp(search), $options: 'i' } },
+        { $text: { $search: search } },
+      ],
+    };
     categories && (filter.category = { $in: categories });
     return Course.find(filter)
       .sort(sortOption)

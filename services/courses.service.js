@@ -31,7 +31,7 @@ module.exports.create = async (user, courseBody) => {
   };
 };
 
-module.exports.getAll = async ({ category, sort, page, perPage }) => {
+module.exports.getAll = async ({ category, sort, search, page, perPage }) => {
   const query = {};
 
   if (category) {
@@ -48,6 +48,7 @@ module.exports.getAll = async ({ category, sort, page, perPage }) => {
   }
 
   query.sort = sort;
+  query.search = search;
   query.page = +page;
   query.perPage = +perPage;
 
