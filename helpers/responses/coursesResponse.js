@@ -3,7 +3,8 @@ const CoursesResponses = {
     return {
       statusCode: 200,
       payload: {
-        msg: 'This student is not register to course',
+        success: false,
+        msg: 'Student is not register to course',
       },
     };
   },
