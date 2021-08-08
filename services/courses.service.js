@@ -31,8 +31,9 @@ module.exports.create = async (user, courseBody) => {
   };
 };
 
-module.exports.getAll = async ({ category }) => {
+module.exports.getAll = async ({ category, sort, page, perPage }) => {
   const query = {};
+
   if (category) {
     const categoryDocument = await CategoryFactory.findById(category);
     if (!categoryDocument) {
@@ -45,7 +46,14 @@ module.exports.getAll = async ({ category }) => {
     const child = categoryDocument.child;
     child.length !== 0 && (query.categories = [...query.categories, ...child]);
   }
+
+  query.sort = sort;
+  query.page = +page;
+  query.perPage = +perPage;
+
   const courses = await CourseFactory.findAll(query);
+  const totalCourses = await Course.count({});
+  const totalPages = Math.round(totalCourses / perPage);
 
   if (!courses) {
     return {
@@ -56,7 +64,12 @@ module.exports.getAll = async ({ category }) => {
 
   return {
     statusCode: 200,
-    payload: { success: true, courses },
+    payload: {
+      success: true,
+      courses,
+      totalCourses,
+      totalPages,
+    },
   };
 };
 

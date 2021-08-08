@@ -95,7 +95,6 @@ const attendedCourses = async (req, res) => {
       ],
     })
     .lean();
-  console.log(user);
   return res
     .status(200)
     .json({ success: true, attendedCourses: user.attendedCourses });
