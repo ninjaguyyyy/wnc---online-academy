@@ -32,8 +32,37 @@ module.exports.displayVideo = async (req, res) => {
   }
 
   if (FILE_TYPES.Video.includes(file.contentType)) {
-    const readStream = gfs.createReadStream(file.filename);
-    readStream.pipe(res);
+    if (req.headers['range']) {
+      var parts = req.headers['range'].replace(/bytes=/, '').split('-');
+      var partialstart = parts[0];
+      var partialend = parts[1];
+
+      var start = parseInt(partialstart, 10);
+      var end = partialend ? parseInt(partialend, 10) : file.length - 1;
+      var chunksize = end - start + 1;
+
+      res.writeHead(206, {
+        'Accept-Ranges': 'bytes',
+        'Content-Length': chunksize,
+        'Content-Range': 'bytes ' + start + '-' + end + '/' + file.length,
+        'Content-Type': file.contentType,
+      });
+
+      gfs
+        .createReadStream({
+          _id: file._id,
+          range: {
+            startPos: start,
+            endPos: end,
+          },
+        })
+        .pipe(res);
+    } else {
+      res.header('Content-Length', file.length);
+      res.header('Content-Type', file.contentType);
+
+      gfs.createReadStream(file.filename).pipe(res);
+    }
   } else {
     return res.status(404).json({ msg: 'No a video file' });
   }

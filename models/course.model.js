@@ -54,7 +54,7 @@ const courseSchema = new Schema(
             title: String,
             video: String,
             content: String,
-            attachedFiles: [String],
+            isPreview: { type: Boolean, default: false },
             totalMinutes: Number,
             order: { type: Number, default: 0 },
           },
