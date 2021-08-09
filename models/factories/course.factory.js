@@ -17,7 +17,7 @@ const CourseFactory = {
         { title: { $regex: new RegExp(search), $options: 'i' } },
         { fullDescription: { $regex: new RegExp(search), $options: 'i' } },
         { shortDescription: { $regex: new RegExp(search), $options: 'i' } },
-        { $text: { $search: search } },
+        { $text: { $search: search || '' } },
       ],
     };
     categories && (filter.category = { $in: categories });
