@@ -149,7 +149,7 @@ const VerifyResponses = {
   },
   emailNotExist() {
     return {
-      statusCode: 400,
+      statusCode: 200,
       payload: {
         msg: 'Email is not exist',
       },
