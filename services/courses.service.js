@@ -52,9 +52,9 @@ module.exports.getAll = async ({ category, sort, search, page, perPage }) => {
   query.page = +page;
   query.perPage = +perPage;
 
-  const courses = await CourseFactory.findAll(query);
-  const totalCourses = await Course.count({});
-  const totalPages = Math.floor(totalCourses / perPage) + 1;
+  const { courses, total } = await CourseFactory.findAll(query);
+
+  const totalPages = Math.floor(total / perPage) + 1;
 
   if (!courses) {
     return {
@@ -68,7 +68,7 @@ module.exports.getAll = async ({ category, sort, search, page, perPage }) => {
     payload: {
       success: true,
       courses,
-      totalCourses,
+      totalCourses: total,
       totalPages,
     },
   };

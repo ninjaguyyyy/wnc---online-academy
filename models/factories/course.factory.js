@@ -2,11 +2,10 @@ var ObjectId = require('mongoose').Types.ObjectId;
 const Course = require('../course.model');
 
 const CourseFactory = {
-  findAll({ categories, sort, search, page, perPage }) {
+  async findAll({ categories, sort, search, page, perPage }) {
     let sortOption = {};
     if (sort) {
       const receivedSortValue = sort.split('_');
-      log(receivedSortValue);
       const field =
         receivedSortValue[0] === 'price' ? 'totalPrice' : receivedSortValue[0];
       sortOption = { [field]: receivedSortValue[1] };
@@ -21,7 +20,9 @@ const CourseFactory = {
       ],
     };
     categories && (filter.category = { $in: categories });
-    return Course.find(filter)
+
+    const total = await Course.find(filter);
+    const courses = await Course.find(filter)
       .sort(sortOption)
       .skip(page === 1 ? 0 : (page - 1) * perPage)
       .limit(perPage)
@@ -31,6 +32,8 @@ const CourseFactory = {
       .populate('promotion')
       .lean()
       .exec();
+
+    return { courses, total: total.length };
   },
   findById(id) {
     if (!ObjectId.isValid(id)) {
