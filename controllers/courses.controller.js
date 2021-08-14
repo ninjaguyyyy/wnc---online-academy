@@ -11,6 +11,13 @@ module.exports.create = async (req, res) => {
   res.status(statusCode).json(payload);
 };
 
+module.exports.getByTeacher = async (req, res) => {
+  const { statusCode, payload } = await coursesService.getByTeacher(
+    req.params.id
+  );
+  res.status(statusCode).json(payload);
+};
+
 module.exports.getAll = async (req, res) => {
   const { statusCode, payload } = await coursesService.getAll(req.query);
   res.status(statusCode).json(payload);

@@ -86,6 +86,18 @@ module.exports.getById = async (id) => {
   };
 };
 
+module.exports.getByTeacher = async (teacherId) => {
+  const courses = await CourseFactory.findByLecturer(teacherId);
+  if (!courses) {
+    return CommonResponses.getFailIdNotValid();
+  }
+
+  return {
+    statusCode: 200,
+    payload: { success: true, courses },
+  };
+};
+
 module.exports.receiveFeedback = async (courseId, userId, feedback) => {
   const course = await CourseFactory.findById(courseId);
   if (!course) {

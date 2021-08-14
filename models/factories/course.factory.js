@@ -12,6 +12,7 @@ const CourseFactory = {
     }
 
     const filter = {
+      isDisabled: false,
       $or: [
         { title: { $regex: new RegExp(search), $options: 'i' } },
         { fullDescription: { $regex: new RegExp(search), $options: 'i' } },
@@ -52,7 +53,7 @@ const CourseFactory = {
     if (!ObjectId.isValid(teacherId)) {
       return false;
     }
-    return Course.find({ lecturer: teacherId })
+    return Course.find({ lecturer: teacherId, isDisabled: false })
       .populate('appliedPromotions')
       .populate('category')
       .populate('lecturer')
