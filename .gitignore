@@ -1,3 +1,9 @@
 /node_modules
 .env
 package-json.lock
+.vscode
+.DS_Store
+
+# Logs
+logs
+*.log
