@@ -37,5 +37,6 @@ router.get(
   role(ROLE.TEACHER),
   usersController.ownCourses
 );
+router.get('/me/attended-courses', auth, usersController.attendedCourses);
 
 module.exports = router;

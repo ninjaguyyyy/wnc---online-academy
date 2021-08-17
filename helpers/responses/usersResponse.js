@@ -149,7 +149,7 @@ const VerifyResponses = {
   },
   emailNotExist() {
     return {
-      statusCode: 400,
+      statusCode: 200,
       payload: {
         msg: 'Email is not exist',
       },
@@ -233,7 +233,7 @@ const ChangePasswordResponses = {
 const AddToFavoriteResponses = {
   addFailAlreadyCourse() {
     return {
-      statusCode: 400,
+      statusCode: 200,
       payload: {
         msg: 'This course is added!',
       },

@@ -1,3 +1,4 @@
+const User = require('../models/user.model');
 const userService = require('../services/users.service');
 
 const register = async (req, res) => {
@@ -34,7 +35,7 @@ const updateProfile = async (req, res) => {
 };
 
 const getProfile = async (req, res) => {
-  const { statusCode, payload } = await userService.updateProfile(req.user);
+  const { statusCode, payload } = await userService.getProfile(req.user);
   res.status(statusCode).json(payload);
 };
 
@@ -80,8 +81,28 @@ const ownCourses = async (req, res) => {
   res.status(statusCode).json(payload);
 };
 
+const attendedCourses = async (req, res) => {
+  const user = await User.findById(req.user.userId)
+    .populate({
+      path: 'attendedCourses',
+      populate: [
+        {
+          path: 'category',
+        },
+        {
+          path: 'lecturer',
+        },
+      ],
+    })
+    .lean();
+  return res
+    .status(200)
+    .json({ success: true, attendedCourses: user.attendedCourses });
+};
+
 module.exports = {
   register,
+  attendedCourses,
   login,
   getAll,
   OTPVerifyUser,

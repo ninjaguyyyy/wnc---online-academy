@@ -12,10 +12,10 @@ const CourseRepository = {
       { new: true }
     ).exec();
   },
-  addFeedback(courseId, feedback) {
+  addFeedback(courseId, feedback, rating) {
     return Course.findByIdAndUpdate(
       courseId,
-      { $push: { feedbacks: feedback } },
+      { $push: { feedbacks: feedback }, rating },
       { new: true }
     )
       .populate('feedbacks.student')

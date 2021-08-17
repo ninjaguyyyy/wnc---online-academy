@@ -4,6 +4,7 @@ const CourseRepository = require('../models/repositories/course.repository');
 const CourseFactory = require('../models/factories/course.factory');
 const { CommonResponses, CoursesResponses } = require('../helpers/responses');
 const CategoryFactory = require('../models/factories/category.factory');
+const Course = require('../models/course.model');
 
 module.exports.create = async (user, courseBody) => {
   // validate data
@@ -30,8 +31,9 @@ module.exports.create = async (user, courseBody) => {
   };
 };
 
-module.exports.getAll = async ({ category }) => {
+module.exports.getAll = async ({ category, sort, search, page, perPage }) => {
   const query = {};
+
   if (category) {
     const categoryDocument = await CategoryFactory.findById(category);
     if (!categoryDocument) {
@@ -44,7 +46,15 @@ module.exports.getAll = async ({ category }) => {
     const child = categoryDocument.child;
     child.length !== 0 && (query.categories = [...query.categories, ...child]);
   }
-  const courses = await CourseFactory.findAll(query);
+
+  query.sort = sort;
+  query.search = search;
+  query.page = +page;
+  query.perPage = +perPage;
+
+  const { courses, total } = await CourseFactory.findAll(query);
+
+  const totalPages = Math.floor(total / perPage) + 1;
 
   if (!courses) {
     return {
@@ -55,7 +65,12 @@ module.exports.getAll = async ({ category }) => {
 
   return {
     statusCode: 200,
-    payload: { success: true, courses },
+    payload: {
+      success: true,
+      courses,
+      totalCourses: total,
+      totalPages,
+    },
   };
 };
 
@@ -71,24 +86,53 @@ module.exports.getById = async (id) => {
   };
 };
 
+module.exports.getByTeacher = async (teacherId) => {
+  const courses = await CourseFactory.findByLecturer(teacherId);
+  if (!courses) {
+    return CommonResponses.getFailIdNotValid();
+  }
+
+  return {
+    statusCode: 200,
+    payload: { success: true, courses },
+  };
+};
+
 module.exports.receiveFeedback = async (courseId, userId, feedback) => {
   const course = await CourseFactory.findById(courseId);
   if (!course) {
     return CommonResponses.getFailIdNotValid();
   }
-  if (!course.students.includes(userId)) {
+  if (!course.students.map((student) => student.toString()).includes(userId)) {
     return CoursesResponses.postFeedbackFailStudentNotExist();
   }
+
+  const totalPoint =
+    course.feedbacks.reduce((acc, review) => acc + review.rating, 0) +
+    feedback.rating;
+  const averageRating = (totalPoint / (course.feedbacks.length + 1)).toFixed(2);
 
   feedback.student = userId;
   const updatedCourse = await await CourseRepository.addFeedback(
     courseId,
-    feedback
+    feedback,
+    averageRating
   );
   const feedbacks = updatedCourse.feedbacks;
 
   return {
     statusCode: 200,
     payload: { success: true, feedbacks },
+  };
+};
+
+module.exports.update = async (courseId, dataToUpdate) => {
+  const updatedCourse = await Course.findByIdAndUpdate(courseId, dataToUpdate, {
+    new: true,
+  }).lean();
+
+  return {
+    statusCode: 200,
+    payload: { success: true, course: updatedCourse },
   };
 };

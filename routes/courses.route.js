@@ -9,7 +9,9 @@ const coursesController = require('../controllers/courses.controller');
 router.post('/', auth, role(ROLE.TEACHER), coursesController.create);
 
 router.get('/', coursesController.getAll);
+router.get('/teacher/:id', coursesController.getByTeacher);
 router.get('/:id', coursesController.getById);
+router.patch('/:id', auth, role(ROLE.TEACHER), coursesController.update);
 router.post('/:id/feedback', auth, coursesController.receiveFeedback);
 
 module.exports = router;

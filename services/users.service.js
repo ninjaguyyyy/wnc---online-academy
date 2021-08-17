@@ -32,6 +32,7 @@ const userService = {
   removeFromFavorite,
   attendCourse,
   ownCourses,
+  getProfile,
 };
 
 async function register(user) {
@@ -130,6 +131,8 @@ async function login(user) {
     firstName: userDocument.firstName,
     lastName: userDocument.lastName,
     id: userDocument.id,
+    favoriteCourses: userDocument.favoriteCourses,
+    attendedCourses: userDocument.attendedCourses,
   });
 }
 
@@ -205,8 +208,18 @@ async function addToFavorite(user, { courseId }) {
     return AddToFavoriteResponses.addFailAlreadyCourse();
   }
 
-  await UserRepository.addFavoriteCourse(user.userId, courseId);
-  return CommonResponses.postSuccess();
+  const updatedUser = await UserRepository.addFavoriteCourse(
+    user.userId,
+    courseId
+  );
+
+  return {
+    statusCode: 201,
+    payload: {
+      success: true,
+      updatedFavoriteCourses: updatedUser.favoriteCourses,
+    },
+  };
 }
 
 async function removeFromFavorite(user, courseId) {
@@ -216,8 +229,18 @@ async function removeFromFavorite(user, courseId) {
     return CommonResponses.getFailIdNotValid();
   }
 
-  await UserRepository.removeAFavoriteCourse(user.userId, courseId);
-  return CommonResponses.success();
+  const updatedUser = await UserRepository.removeAFavoriteCourse(
+    user.userId,
+    courseId
+  );
+
+  return {
+    statusCode: 201,
+    payload: {
+      success: true,
+      updatedFavoriteCourses: updatedUser.favoriteCourses,
+    },
+  };
 }
 
 async function attendCourse(user, { courseId }) {
@@ -227,9 +250,22 @@ async function attendCourse(user, { courseId }) {
     return CommonResponses.getFailIdNotValid();
   }
 
-  await UserRepository.addAttendedCourse(user.userId, courseId);
-  await CourseRepository.addStudentToCourse(courseId, user.userId);
-  return CommonResponses.postSuccess();
+  const updatedUser = await UserRepository.addAttendedCourse(
+    user.userId,
+    courseId
+  );
+  const updatedCourse = await CourseRepository.addStudentToCourse(
+    courseId,
+    user.userId
+  );
+  return {
+    statusCode: 201,
+    payload: {
+      success: true,
+      updatedAttendedCourses: updatedUser.attendedCourses,
+      updatedCourse,
+    },
+  };
 }
 
 async function ownCourses(teacher) {
